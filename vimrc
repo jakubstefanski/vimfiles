@@ -1,6 +1,7 @@
 " Common
+scriptencoding utf-8
 set nocompatible
-set encoding=utf8
+set encoding=utf-8
 set autoread
 set ruler
 set showcmd
@@ -78,19 +79,22 @@ hi default link User2 Identifier
 hi default link User3 Special
 hi default link User4 Title
 
-" Return to last edit position when opening files
-autocmd BufReadPost *
-			\ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
-			\   exe "normal! g`\"" |
-			\ endif
-
-" Remember last active buffer
 let g:lastbuf = 1
-au BufLeave * let g:lastbuf = bufnr('%')
-
-" Remember last active tab
 let g:lasttab = 1
-au TabLeave * let g:lasttab = tabpagenr()
+
+augroup vimfiles_navigation
+	autocmd!
+
+	" Return to last edit position when opening files
+	autocmd BufReadPost *
+				\ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype !=# "gitcommit" |
+				\   execute "normal! g`\"" |
+				\ endif
+
+	" Remember the last active buffer and tab
+	autocmd BufLeave * let g:lastbuf = bufnr('%')
+	autocmd TabLeave * let g:lasttab = tabpagenr()
+augroup END
 
 " Leader bindings
 set notimeout
@@ -100,11 +104,11 @@ nnoremap <Leader>t :exe "tabn ".g:lasttab<CR>
 nnoremap <Leader>n :nohl<CR>
 nnoremap <Leader>w <c-w>
 
-" Highlight trailing whitespaces
+" Highlight trailing whitespace
 highlight TrailingWhitespaces ctermbg=Red guibg=Red
-match TrailingWhitespaces /\s\+$/
 
-augroup HighlightTrailingWhitespaces
+augroup vimfiles_trailing_whitespace
+	autocmd!
 	autocmd BufEnter * match TrailingWhitespaces /\s\+$/
 	autocmd BufWinEnter * match TrailingWhitespaces /\s\+$/
 	autocmd WinEnter * match TrailingWhitespaces /\s\+$/
@@ -116,5 +120,7 @@ augroup HighlightTrailingWhitespaces
 augroup END
 
 " FZF configuration
-nnoremap <Leader>e :call fzf#run({'source': 'git ls-files', 'sink': 'e'})<CR>
-nnoremap <Leader>E :call fzf#run({'sink': 'e'})<CR>
+if executable('fzf')
+	nnoremap <Leader>e :call fzf#run({'source': 'git ls-files', 'sink': 'e'})<CR>
+	nnoremap <Leader>E :call fzf#run({'sink': 'e'})<CR>
+endif

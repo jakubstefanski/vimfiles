@@ -1,5 +1,7 @@
-if has("win32")
+if has('win32') || has('win64')
 	set guifont=DejaVu\ Sans\ Mono:h10
+elseif has('mac')
+	set guifont=DejaVu\ Sans\ Mono:h11
 else
 	set guifont=DejaVu\ Sans\ Mono\ 11
 endif
