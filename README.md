@@ -15,9 +15,20 @@ in place. Existing unrelated Vim configuration is never overwritten.
 - Vim 8 or newer
 - Git
 - [fzf](https://github.com/junegunn/fzf), optionally, for fuzzy-finder mappings
+- [ripgrep](https://github.com/BurntSushi/ripgrep), optionally, for the
+  fuzzy content-search mapping
 
 The configuration still starts normally when `fzf` is unavailable; only its
 mappings are omitted.
+
+Fuzzy-finder mappings:
+
+- `Space e`: files in the current directory
+- `Space g`: Git-tracked files
+- `Space G`: changed and untracked Git files
+- `Space b`: open buffers
+- `Space h`: recently opened files
+- `Space /`: search file contents; requires `ripgrep`
 
 ## macOS and Linux
 

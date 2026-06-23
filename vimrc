@@ -2,6 +2,15 @@
 scriptencoding utf-8
 set nocompatible
 set encoding=utf-8
+
+" Git Bash's MSYS2 Vim searches ~/.vim instead of Windows' ~/vimfiles.
+if has('win32unix')
+	let s:vimfiles = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+	execute 'set runtimepath^=' . fnameescape(s:vimfiles)
+	execute 'set packpath^=' . fnameescape(s:vimfiles)
+	unlet s:vimfiles
+endif
+
 set autoread
 set ruler
 set showcmd
@@ -121,6 +130,12 @@ augroup END
 
 " FZF configuration
 if executable('fzf')
-	nnoremap <Leader>e :call fzf#run({'source': 'git ls-files', 'sink': 'e'})<CR>
-	nnoremap <Leader>E :call fzf#run({'sink': 'e'})<CR>
+	nnoremap <Leader>e :Files<CR>
+	nnoremap <Leader>g :GFiles<CR>
+	nnoremap <Leader>G :GFiles?<CR>
+	nnoremap <Leader>b :Buffers<CR>
+	nnoremap <Leader>h :History<CR>
+	if executable('rg')
+		nnoremap <Leader>/ :Rg<CR>
+	endif
 endif
